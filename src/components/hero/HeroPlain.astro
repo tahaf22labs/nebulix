@@ -1,0 +1,121 @@
+---
+import Button from "@components/navigation/Button.astro";
+import ItemFilter from "@components/navigation/ItemFilter.astro";
+import FormattedDate from "@components/FormattedDate.astro";
+import { Picture } from "astro-imagetools/components";
+const {
+  title,
+  description,
+  hero_buttons,
+  thumbnail,
+  intro,
+  tag,
+  style,
+  pubDate,
+  base_url,
+  filters,
+  filter,
+  filter_type,
+} = Astro.props;
+// console.log(Astro.props)
+const { slug } = Astro.params;
+---
+
+<div
+  class={`z-0 overflow-hidden ${style.hero_surface || ""} ${style.hero_class}`}
+  id="header"
+>
+  <div class="z-10 grid place-items-center">
+    <div class="container-xl py-20">
+      <div class="mx-auto max-w-3xl text-center">
+        {
+          pubDate && (
+            <span class="text-overline">
+              <FormattedDate date={pubDate} />
+            </span>
+          )
+        }
+
+        <h1 class="title">{title}</h1>
+        <h3 class="pt-4 text-lg font-semibold md:text-2xl">{description}</h3>
+        <div>
+          {
+            thumbnail && (
+              <Picture
+                attributes={{
+                  picture: {
+                    class: "sm:h-screen",
+                    style: `opacity: ${style.hero_image_opacity || 0.8}`,
+                  },
+                }}
+                src={thumbnail}
+                width={1920}
+                height={1080}
+                ar={16 / 10}
+                alt={"Coming Soon"}
+                breakpoints={[375, 1000, 1280, 1440, 1536, 1920]}
+                sizes="100vw"
+                loading="eager"
+                layout="fill"
+                position="entropy"
+                artDirectives={[
+                  {
+                    media: "(max-width: 500px)",
+                    ar: 1.2,
+                    src: thumbnail,
+                    breakpoints: [
+                      320, 360, 390, 412, 500, 601, 768, 1024, 1200,
+                    ],
+                  },
+                  {
+                    media: "(max-width: 1000px)",
+                    ar: 1.2,
+                    src: thumbnail,
+                    breakpoints: [
+                      500, 601, 768, 820, 962, 1280, 1440, 1536, 1920,
+                    ],
+                  },
+                ]}
+              />
+            )
+          }
+        </div>
+
+        <!-- {intro && <div class="subtitle balance py-2"> {intro}</div>}
+        {
+          tag && (
+            <ItemFilter
+              filters={tag}
+              className="mt-4 justify-center"
+              links={true}
+              {base_url}
+            />
+          )
+        }
+
+        {
+          filters && (
+            <ItemFilter
+              filters={filters}
+              className="mt-4 justify-center"
+              links={true}
+              active={filter}
+              type={filter_type}
+              {base_url}
+            />
+          )
+        }
+        {
+          hero_buttons && (
+            <div class="flex flex-wrap justify-center gap-4 py-8">
+              {hero_buttons.map((btn) => (
+                <Button {...btn} />
+              ))}
+            </div>
+          )
+        } -->
+        <slot />
+      </div>
+    </div>
+  </div>
+</div>
